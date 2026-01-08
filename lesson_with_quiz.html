@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python ITS Certification Prep</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border: #334155;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-section {
+            padding: 0 1rem 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 0.5rem 0.5rem 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 0.75rem;
+            margin-bottom: 0.5rem;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        .nav-button.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .quiz-button {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 1rem 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            text-align: center;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            overflow-y: auto;
+        }
+
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-number {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .concept-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .concept-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .concept-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .code-label {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .code-content {
+            color: #a3e635;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .question-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .question-code {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #a3e635;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .options {
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .option input {
+            margin-right: 1rem;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: #6ee7b7;
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+        }
+
+        .submit-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-light);
+        }
+
+        .section-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .section-footer button {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .section-footer button:hover:not(:disabled) {
+            background: var(--accent-light);
+        }
+
+        .section-footer button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quiz-results {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .result-text {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-bottom: 1px solid var(--border);
+            }
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Python ITS</h2>
+                <p>Certification Prep</p>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Core Topics</div>
+                <button class="nav-button active" onclick="goToSection(0)">1. Data Types & Operators</button>
+                <button class="nav-button" onclick="goToSection(1)">2. Flow Control</button>
+                <button class="nav-button" onclick="goToSection(2)">3. Input & Output</button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Advanced Topics</div>
+                <button class="nav-button" onclick="goToSection(3)">4. Code Documentation</button>
+                <button class="nav-button" onclick="goToSection(4)">5. Error Handling</button>
+                <button class="nav-button" onclick="goToSection(5)">6. Modules & Tools</button>
+            </div>
+
+            <button class="quiz-button" onclick="goToQuiz()">📊 Final Quiz</button>
+        </div>
+
+        <div class="main-content" id="content"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 'q1',
+                section: 0,
+                question: 'What is the result of: 3 + 4 * 2 - 6 // 2?',
+                code: '3 + 4 * 2 - 6 // 2',
+                options: ['a) 8', 'b) 9', 'c) 10', 'd) 11'],
+                correct: 'a',
+                explanation: 'Multiplication/floor division first: 4*2=8, 6//2=3. Then left-to-right: 3+8=11, 11-3=8.'
+            },
+            {
+                id: 'q2',
+                section: 0,
+                question: 'What does this code print?',
+                code: 'x = "hello"\nprint(x[1:4])',
+                options: ['a) hell', 'b) ell', 'c) llo', 'd) hello'],
+                correct: 'b',
+                explanation: 'Slicing [1:4] includes indices 1,2,3. h(0)e(1)l(2)l(3)o(4) → ell'
+            },
+            {
+                id: 'q3',
+                section: 0,
+                question: 'When is "a is b" true for integers?',
+                code: 'a = 256\nb = 256\nprint(a is b)',
+                options: ['a) Always true', 'b) Always false', 'c) True for -5 to 256, false beyond', 'd) Depends on version'],
+                correct: 'c',
+                explanation: 'Python caches integers -5 to 256. So 256 is 256 is True, but 257 is 257 is False.'
+            },
+            {
+                id: 'q4',
+                section: 1,
+                question: 'What is printed?',
+                code: 'for i in range(1, 5):\n    if i == 3:\n        continue\n    print(i)',
+                options: ['a) 1 2 3 4', 'b) 1 2 4', 'c) 2 3 4', 'd) 1 2 3'],
+                correct: 'b',
+                explanation: 'range(1,5) gives 1,2,3,4. When i==3, continue skips it. Output: 1, 2, 4'
+            },
+            {
+                id: 'q5',
+                section: 1,
+                question: 'What is printed?',
+                code: 'total = 0\nfor i in range(3):\n    total += i\nprint(total)',
+                options: ['a) 0', 'b) 6', 'c) 2', 'd) 3'],
+                correct: 'd',
+                explanation: 'range(3) gives 0,1,2. total = 0+0=0, 0+1=1, 1+2=3. Output: 3'
+            },
+            {
+                id: 'q6',
+                section: 1,
+                question: 'What is the output?',
+                code: 'x = 5\nif x > 3:\n    print("A")\nelif x > 3:\n    print("B")',
+                options: ['a) A', 'b) B', 'c) A and B', 'd) Nothing'],
+                correct: 'a',
+                explanation: 'First if (x > 3) is true, prints A. elif is skipped because if already matched.'
+            },
+            {
+                id: 'q7',
+                section: 2,
+                question: 'What is printed?',
+                code: 'name = "Python"\nversion = 3.12\nprint(f"{name} {version}")',
+                options: ['a) name version', 'b) Python 3.12', 'c) {name} {version}', 'd) Python3.12'],
+                correct: 'b',
+                explanation: 'F-strings substitute variables inside {}. Output: Python 3.12'
+            },
+            {
+                id: 'q8',
+                section: 2,
+                question: 'What type does input() return?',
+                code: 'age = input("Enter age: ")',
+                options: ['a) Integer', 'b) Always a string', 'c) Varies by input', 'd) Float'],
+                correct: 'b',
+                explanation: 'input() always returns a string. Convert with int() or float() if needed.'
+            },
+            {
+                id: 'q9',
+                section: 2,
+                question: 'What does "with" do when opening files?',
+                code: 'with open("file.txt") as f:\n    data = f.read()',
+                options: ['a) Makes it faster', 'b) Automatically closes file', 'c) Encrypts data', 'd) Nothing special'],
+                correct: 'b',
+                explanation: '"with" ensures the file is closed automatically, even if an error occurs.'
+            },
+            {
+                id: 'q10',
+                section: 3,
+                question: 'What is returned?',
+                code: 'def multiply(a, b=3):\n    return a * b\nprint(multiply(4))',
+                options: ['a) 4', 'b) 12', 'c) 3', 'd) Error'],
+                correct: 'b',
+                explanation: 'multiply(4) uses default b=3, so 4*3=12'
+            },
+            {
+                id: 'q11',
+                section: 3,
+                question: 'Which one is a docstring?',
+                code: 'comment vs docstring',
+                options: ['a) # This is a comment', 'b) """This is a docstring"""', 'c) Both the same', 'd) Neither'],
+                correct: 'b',
+                explanation: 'Docstrings use triple quotes """. Comments use #. Docstrings are for pydoc.'
+            },
+            {
+                id: 'q12',
+                section: 4,
+                question: 'What is printed?',
+                code: 'try:\n    x = 10 / 0\nexcept ZeroDivisionError:\n    print("Error")\nelse:\n    print("Success")',
+                options: ['a) Error', 'b) Success', 'c) Both', 'd) Nothing'],
+                correct: 'a',
+                explanation: '10/0 raises ZeroDivisionError. except runs, prints "Error". else only runs if no error.'
+            },
+            {
+                id: 'q13',
+                section: 4,
+                question: 'When do syntax errors occur?',
+                code: 'Syntax vs Runtime',
+                options: ['a) Always at runtime', 'b) Before code runs', 'c) Randomly', 'd) Never'],
+                correct: 'b',
+                explanation: 'Syntax errors (bad indentation, missing colons) are caught during parsing, before running.'
+            },
+            {
+                id: 'q14',
+                section: 4,
+                question: 'Which assertion checks membership?',
+                code: 'self.assertIn()',
+                options: ['a) self.assertIs()', 'b) self.assertIn()', 'c) self.assertEqual()', 'd) self.assertTrue()'],
+                correct: 'b',
+                explanation: 'assertIn(a, b) checks if a is in b. assertIs checks identity.'
+            },
+            {
+                id: 'q15',
+                section: 5,
+                question: 'What does os.path.exists() do?',
+                code: 'import os\nos.path.exists("data.txt")',
+                options: ['a) Creates file', 'b) Returns True/False if exists', 'c) Opens file', 'd) Deletes file'],
+                correct: 'b',
+                explanation: 'os.path.exists(path) returns True if file/directory exists, False otherwise.'
+            },
+            {
+                id: 'q16',
+                section: 5,
+                question: 'What does math.ceil(4.1) return?',
+                code: 'import math\nmath.ceil(4.1)',
+                options: ['a) 4', 'b) 4.1', 'c) 5', 'd) 4.0'],
+                correct: 'c',
+                explanation: 'math.ceil() rounds UP. ceil(4.1)=5. floor(4.1)=4.'
+            },
+            {
+                id: 'q17',
+                section: 5,
+                question: 'Which picks 3 unique items from a list?',
+                code: 'random.sample(list, 3)',
+                options: ['a) random.choice()', 'b) random.sample()', 'c) random.randint()', 'd) random.shuffle()'],
+                correct: 'b',
+                explanation: 'random.sample(list, k) picks k unique items. choice() picks 1. shuffle() reorders.'
+            },
+            {
+                id: 'q18',
+                section: 5,
+                question: 'How to get current date and time?',
+                code: 'import datetime',
+                options: ['a) datetime.date.today()', 'b) datetime.datetime.now()', 'c) datetime.time()', 'd) time.now()'],
+                correct: 'b',
+                explanation: 'datetime.datetime.now() returns date and time. date.today() is date only.'
+            }
+        ];
+
+        const sections = [
+            {
+                title: 'Data Types & Operators',
+                subtitle: 'Understanding Python\'s fundamental data types and operations',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">1.1 Core Data Types</h3>
+                        <p class="concept-description">Python has four main built-in data types:</p>
+                        <div class="code-block">
+                            <div class="code-label">Python Data Types</div>
+                            <div class="code-content">name = "Alice"           # str (string)
+age = 25                   # int (integer)
+height = 5.8               # float
+is_student = True          # bool (boolean)</div>
+                        </div>
+                        <p class="concept-description"><strong>Key:</strong> Python automatically assigns types.</p>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">1.2 Data Type Conversion & List Operations</h3>
+                        <div class="code-block">
+                            <div class="code-label">Type Conversion</div>
+                            <div class="code-content">x = "42"
+y = int(x)                 # Convert string to int
+z = str(25.5)              # Convert float to string</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">List Operations</div>
+                            <div class="code-content">nums = [3, 1, 4, 1, 5]
+nums.append(9)             # Add element
+nums.sort()                # Sort in place
+nums.remove(1)             # Remove first 1
+max(nums)                  # Maximum value
+min(nums)                  # Minimum value
+nums.reverse()             # Reverse in place</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Indexing & Slicing</div>
+                            <div class="code-content">s = "Python"
+s[0]                       # 'P' (first)
+s[-1]                      # 'n' (last)
+s[1:4]                     # 'yth' (indices 1,2,3 - NOT 4!)</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">1.3 & 1.4 Operator Precedence</h3>
+                        <p class="concept-description">Evaluation order (highest to lowest):</p>
+                        <div class="code-block">
+                            <div class="code-label">Order</div>
+                            <div class="code-content">1. ** (exponentiation)
+2. *, /, //, % (multiplication, division, floor, modulo)
+3. +, - (addition, subtraction)
+4. ==, !=, <, >, <=, >= (comparison)
+5. is, in (identity, membership)
+6. not, and, or (logical)</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Examples</div>
+                            <div class="code-content">2 + 3 * 4              # 14 (multiply first)
+10 // 3                    # 3 (floor division)
+5 == 5                     # True (value equality)
+5 is 5                     # True (identity)</div>
+                        </div>
+                    </div>
+
+                    <div id="q1"></div>
+                    <div id="q2"></div>
+                    <div id="q3"></div>
+                `
+            },
+            {
+                title: 'Flow Control with Decisions and Loops',
+                subtitle: 'Branching statements and iteration',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">2.1 Branching Statements</h3>
+                        <div class="code-block">
+                            <div class="code-label">If/Elif/Else</div>
+                            <div class="code-content">score = 85
+
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+else:
+    print("C")</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">2.2 Loops & Control Flow</h3>
+                        <div class="code-block">
+                            <div class="code-label">For Loop</div>
+                            <div class="code-content">for i in range(5):           # 0, 1, 2, 3, 4
+    print(i)
+
+for i in range(1, 5):        # 1, 2, 3, 4
+    print(i)
+
+for i in range(0, 10, 2):    # 0, 2, 4, 6, 8
+    print(i)</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Break, Continue, Pass</div>
+                            <div class="code-content">for i in range(10):
+    if i == 5:
+        break              # Exit loop
+
+for i in range(5):
+    if i == 2:
+        continue           # Skip iteration
+    print(i)</div>
+                        </div>
+                    </div>
+
+                    <div id="q4"></div>
+                    <div id="q5"></div>
+                    <div id="q6"></div>
+                `
+            },
+            {
+                title: 'Input and Output Operations',
+                subtitle: 'File I/O and console operations',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">3.1 File Input and Output</h3>
+                        <p class="concept-description">The 'with' statement is best practice.</p>
+                        <div class="code-block">
+                            <div class="code-label">Writing to a File</div>
+                            <div class="code-content">with open("output.txt", "w") as f:
+    f.write("Hello, World!")
+    f.write("Line 2")</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Reading from a File</div>
+                            <div class="code-content">with open("input.txt", "r") as f:
+    content = f.read()     # Entire file
+
+with open("input.txt", "r") as f:
+    lines = f.readlines()  # List of lines</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">File Operations</div>
+                            <div class="code-content">import os
+
+os.path.exists("file.txt")  # Check if exists
+os.remove("file.txt")       # Delete file</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">3.2 Console Input and Output</h3>
+                        <div class="code-block">
+                            <div class="code-label">Input & Output</div>
+                            <div class="code-content">name = input("Enter name: ")  # Always returns string
+age = int(input("Age: "))      # Convert to int
+
+# F-Strings
+print(f"Name: {name}, Age: {age}")
+print(f"Score: {95.5:.1f}")    # 1 decimal place</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Command-Line Arguments</div>
+                            <div class="code-content">import sys
+
+# python script.py arg1 arg2
+print(sys.argv)    # ['script.py', 'arg1', 'arg2']
+print(sys.argv[1]) # 'arg1'</div>
+                        </div>
+                    </div>
+
+                    <div id="q7"></div>
+                    <div id="q8"></div>
+                    <div id="q9"></div>
+                `
+            },
+            {
+                title: 'Code Documentation and Structure',
+                subtitle: 'Writing clean, maintainable code',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">4.1 Documenting Code</h3>
+                        <div class="code-block">
+                            <div class="code-label">Comments & Indentation</div>
+                            <div class="code-content"># Single-line comment
+
+if x > 5:
+    print("x is big")      # Proper indentation required</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Docstrings</div>
+                            <div class="code-content">def calculate_area(radius):
+    """
+    Calculate the area of a circle.
+    
+    Args:
+        radius (float): The radius
+        
+    Returns:
+        float: The area
+    """
+    import math
+    return math.pi * radius ** 2</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">4.2 Function Definitions</h3>
+                        <div class="code-block">
+                            <div class="code-label">Functions with Default Parameters</div>
+                            <div class="code-content">def power(base, exponent=2):
+    return base ** exponent
+
+result = power(5)      # Uses default: 25
+result = power(5, 3)   # Uses 3: 125</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Return Values</div>
+                            <div class="code-content">def add(a, b):
+    return a + b
+
+def get_info():
+    return "John", 25  # Returns tuple
+    
+name, age = get_info()</div>
+                        </div>
+                    </div>
+
+                    <div id="q10"></div>
+                    <div id="q11"></div>
+                `
+            },
+            {
+                title: 'Troubleshooting and Error Handling',
+                subtitle: 'Detect errors and handle exceptions gracefully',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">5.1 Types of Errors</h3>
+                        <div class="code-block">
+                            <div class="code-label">Syntax Errors (caught before running)</div>
+                            <div class="code-content">if x > 5           # Missing colon
+    print("x is big")</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Runtime Errors (occur while running)</div>
+                            <div class="code-content">print(undefined_variable)  # NameError
+nums = [1, 2, 3]
+print(nums[5])         # IndexError
+x = 10 / 0             # ZeroDivisionError</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">5.2 Exception Handling</h3>
+                        <div class="code-block">
+                            <div class="code-label">Try/Except/Else/Finally</div>
+                            <div class="code-content">try:
+    x = int(input("Number: "))
+except ValueError:
+    print("Not a number")
+else:
+    print(f"You entered: {x}")  # Only if no error
+finally:
+    print("Done")               # Always runs</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Raise Exception</div>
+                            <div class="code-content">def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    return age</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">5.3 Unit Testing</h3>
+                        <div class="code-block">
+                            <div class="code-label">Assertions</div>
+                            <div class="code-content">import unittest
+
+class TestMath(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(2 + 3, 5)
+        self.assertIn(1, [1, 2, 3])</div>
+                        </div>
+                    </div>
+
+                    <div id="q12"></div>
+                    <div id="q13"></div>
+                    <div id="q14"></div>
+                `
+            },
+            {
+                title: 'Operations using Modules and Tools',
+                subtitle: 'Leveraging Python\'s built-in modules',
+                content: `
+                    <div class="concept-card">
+                        <h3 class="concept-title">6.1 File System and Command-Line Operations</h3>
+                        <div class="code-block">
+                            <div class="code-label">OS Module - File Operations</div>
+                            <div class="code-content">import os
+
+os.path.exists("file.txt")      # True/False
+os.path.isfile("file.txt")      # True/False
+os.listdir(".")                 # List files
+os.remove("old_file.txt")       # Delete file</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">SYS Module - Command Line</div>
+                            <div class="code-content">import sys
+
+print(sys.argv)         # ['script.py', 'arg1', 'arg2']
+print(sys.argv[1])      # 'arg1'</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">6.2a Math Module</h3>
+                        <div class="code-block">
+                            <div class="code-label">Math Functions</div>
+                            <div class="code-content">import math
+
+math.ceil(3.2)          # 4 (round up)
+math.floor(3.8)         # 3 (round down)
+math.sqrt(16)           # 4.0
+math.pow(2, 3)          # 8.0
+math.pi                 # 3.14159...</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3 class="concept-title">6.2b Random & Datetime Modules</h3>
+                        <div class="code-block">
+                            <div class="code-label">Random Functions</div>
+                            <div class="code-content">import random
+
+random.randint(1, 10)        # Random int from 1-10
+random.choice([1, 2, 3])     # Pick one
+random.sample([1, 2, 3, 4, 5], 3)  # Pick 3 unique</div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-label">Datetime Functions</div>
+                            <div class="code-content">import datetime
+
+now = datetime.datetime.now()
+now.strftime("%Y-%m-%d")     # "2025-01-07"
+now.weekday()                # 0=Monday, 6=Sunday</div>
+                        </div>
+                    </div>
+
+                    <div id="q15"></div>
+                    <div id="q16"></div>
+                    <div id="q17"></div>
+                    <div id="q18"></div>
+                `
+            }
+        ];
+
+        function renderQuestion(q) {
+            return `
+                <div class="question-card">
+                    <div class="question-text">Q${q.id.substring(1)}: ${q.question}</div>
+                    <div class="question-code">${q.code}</div>
+                    <div class="options">
+                        ${q.options.map((opt, idx) => `
+                            <label class="option">
+                                <input type="radio" name="${q.id}" value="${['a','b','c','d'][idx]}"> ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button class="submit-btn" onclick="checkAnswer('${q.id}', '${q.correct}')">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(qId, correct) {
+            const selected = document.querySelector(`input[name="${qId}"]:checked`);
+            if (!selected) {
+                alert('Please select an answer');
+                return;
+            }
+
+            const q = questions.find(x => x.id === qId);
+            const isCorrect = selected.value === correct;
+            const card = selected.closest('.question-card');
+            const feedback = card.querySelector('.feedback');
+
+            card.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                const input = opt.querySelector('input');
+                if (input.value === correct) {
+                    opt.classList.add('correct');
+                }
+                if (input.value === selected.value && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            feedback.classList.add('show');
+            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = q.explanation;
+        }
+
+        function goToSection(index) {
+            document.querySelectorAll('.nav-button').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            const section = sections[index];
+            const html = `
+                <div class="section-header">
+                    <div class="section-number">Section ${index + 1}</div>
+                    <h1 class="section-title">${section.title}</h1>
+                    <p class="section-subtitle">${section.subtitle}</p>
+                </div>
+                ${section.content}
+                <div class="section-footer">
+                    ${index > 0 ? `<button onclick="goToSection(${index - 1})">← Previous</button>` : '<button disabled>← Previous</button>'}
+                    ${index < sections.length - 1 ? `<button onclick="goToSection(${index + 1})">Next →</button>` : `<button onclick="goToQuiz()">Take Final Quiz →</button>`}
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+
+            questions.filter(q => q.section === index).forEach(q => {
+                const el = document.getElementById(q.id);
+                if (el) el.innerHTML = renderQuestion(q);
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        function goToQuiz() {
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+
+            let html = `
+                <div class="section-header">
+                    <div class="section-number">Assessment</div>
+                    <h1 class="section-title">Final Certification Quiz</h1>
+                    <p class="section-subtitle">Test your knowledge across all topics</p>
+                </div>
+            `;
+
+            questions.forEach(q => {
+                html += renderQuestion(q);
+            });
+
+            html += `
+                <div class="section-footer">
+                    <button onclick="goToSection(0)">← Back to Topics</button>
+                    <button onclick="showResults()">Show Results</button>
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        function showResults() {
+            let correct = 0;
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (selected && selected.value === q.correct) {
+                    correct++;
+                }
+            });
+
+            const total = questions.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= 70;
+
+            const html = `
+                <div class="section-header">
+                    <div class="section-number">Results</div>
+                    <h1 class="section-title">Your Score</h1>
+                </div>
+                <div class="quiz-results">
+                    <div class="result-score">${percentage}%</div>
+                    <div class="result-text">You got ${correct} out of ${total} correct</div>
+                    <div class="result-message">${passed ? '✓ You\'re ready for the exam!' : 'Review the topics above to improve your score'}</div>
+                </div>
+                <div class="section-footer">
+                    <button onclick="goToSection(0)">← Back to Topics</button>
+                    <button onclick="location.reload()">Start Over</button>
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        // Initialize
+        goToSection(0);
+    </script>
+</body>
+</html>

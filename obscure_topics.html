@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Obscure Topics Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border: #334155;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-light);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .progress {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .question-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .question-code {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #a3e635;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .options {
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .option input {
+            margin-right: 1rem;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: #6ee7b7;
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+        }
+
+        .submit-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-light);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+
+        .controls button {
+            padding: 0.75rem 2rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .controls button:hover:not(:disabled) {
+            background: var(--accent-light);
+        }
+
+        .controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .result-text {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            color: var(--success);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Obscure Topics Quiz</h1>
+            <p class="subtitle">DateTime, I/O, sys.argv, Math, Random, os.path, Assertions</p>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">Question 1 of 25</div>
+        </div>
+
+        <div id="quiz-container"></div>
+        <div id="results" class="results"></div>
+
+        <div class="controls">
+            <button id="prev-btn" onclick="previousQuestion()" disabled>← Previous</button>
+            <button id="next-btn" onclick="nextQuestion()">Next →</button>
+            <button id="results-btn" onclick="showResults()" style="display: none;">Show Results</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // DateTime
+            {
+                num: 1,
+                question: 'What does datetime.datetime.now() return?',
+                code: 'import datetime\ndatetime.datetime.now()',
+                options: ['a) Only the date', 'b) Only the time', 'c) Both date and time', 'd) A timestamp'],
+                correct: 'c',
+                explanation: 'datetime.datetime.now() returns both date and time. Use date.today() for date only.'
+            },
+            {
+                num: 2,
+                question: 'What does strftime("%Y-%m-%d") produce?',
+                code: 'now = datetime.datetime.now()\nnow.strftime("%Y-%m-%d")',
+                options: ['a) 2025-01-08', 'b) 01-08-2025', 'c) Jan 8 2025', 'd) 08/01/2025'],
+                correct: 'a',
+                explanation: '%Y=4-digit year, %m=month, %d=day. Output: 2025-01-08'
+            },
+            {
+                num: 3,
+                question: 'What does weekday() return for Monday?',
+                code: 'now = datetime.datetime.now()\nday = now.weekday()',
+                options: ['a) 0', 'b) 1', 'c) Monday as string', 'd) 7'],
+                correct: 'a',
+                explanation: 'weekday() returns 0=Monday, 1=Tuesday, ... 6=Sunday'
+            },
+            {
+                num: 4,
+                question: 'What does strftime("%A") produce?',
+                code: 'now.strftime("%A")',
+                options: ['a) 01', 'b) Jan', 'c) Wednesday', 'd) W'],
+                correct: 'c',
+                explanation: '%A gives full day name. %a gives abbreviated (Wed). %B gives full month name.'
+            },
+            // File I/O
+            {
+                num: 5,
+                question: 'What does open("file.txt", "w") do?',
+                code: 'f = open("file.txt", "w")\nf.write("Hello")',
+                options: ['a) Reads the file', 'b) Creates/overwrites file', 'c) Appends to file', 'd) Lists files'],
+                correct: 'b',
+                explanation: '"w" mode creates or overwrites. "a" appends. "r" reads. "w" erases existing content.'
+            },
+            {
+                num: 6,
+                question: 'What is the benefit of using "with"?',
+                code: 'with open("file.txt") as f:\n    data = f.read()',
+                options: ['a) Makes it faster', 'b) Auto-closes file', 'c) Encrypts data', 'd) No difference'],
+                correct: 'b',
+                explanation: '"with" automatically closes the file when exiting the block, even if errors occur.'
+            },
+            {
+                num: 7,
+                question: 'What does f.readlines() return?',
+                code: 'with open("file.txt") as f:\n    lines = f.readlines()',
+                options: ['a) String with entire file', 'b) List of lines with \\n', 'c) First line only', 'd) Iterator'],
+                correct: 'b',
+                explanation: 'readlines() returns a list where each element is a line (with \\n at end). read() returns one string.'
+            },
+            {
+                num: 8,
+                question: 'What happens if you open() without with?',
+                code: 'f = open("file.txt")\ndata = f.read()\n# no f.close()',
+                options: ['a) Auto-closes', 'b) File stays open (resource leak)', 'c) Error', 'd) Locked file'],
+                correct: 'b',
+                explanation: 'Without with or close(), the file stays open. This wastes resources and can cause issues.'
+            },
+            // sys.argv
+            {
+                num: 9,
+                question: 'What is sys.argv[0]?',
+                code: '# python script.py arg1 arg2\nimport sys\nprint(sys.argv[0])',
+                options: ['a) arg1', 'b) arg2', 'c) script.py', 'd) python'],
+                correct: 'c',
+                explanation: 'sys.argv[0] is the script name. sys.argv[1] is first arg, sys.argv[2] is second, etc.'
+            },
+            {
+                num: 10,
+                question: 'How do you check if command-line args were provided?',
+                code: 'import sys\nif len(sys.argv) > 1:',
+                options: ['a) Check sys.argv directly', 'b) Use len(sys.argv) > 1', 'c) Check sys.argv[1]', 'd) Use sys.args'],
+                correct: 'b',
+                explanation: 'len(sys.argv) > 1 checks if any args exist. sys.argv always has at least the script name.'
+            },
+            // Math
+            {
+                num: 11,
+                question: 'What is math.ceil(4.1)?',
+                code: 'import math\nmath.ceil(4.1)',
+                options: ['a) 4', 'b) 4.1', 'c) 5', 'd) 4.0'],
+                correct: 'c',
+                explanation: 'ceil() rounds UP. ceil(4.1)=5. floor(4.1)=4. trunc(4.1)=4.'
+            },
+            {
+                num: 12,
+                question: 'What is math.floor(4.9)?',
+                code: 'import math\nmath.floor(4.9)',
+                options: ['a) 4', 'b) 5', 'c) 4.9', 'd) Error'],
+                correct: 'a',
+                explanation: 'floor() rounds DOWN. floor(4.9)=4. ceil(4.9)=5.'
+            },
+            {
+                num: 13,
+                question: 'What does math.sqrt(16) return?',
+                code: 'import math\nmath.sqrt(16)',
+                options: ['a) 4', 'b) 4.0', 'c) [4]', 'd) 2'],
+                correct: 'b',
+                explanation: 'sqrt() returns a float. sqrt(16)=4.0. Use math.isqrt() for integer square root.'
+            },
+            {
+                num: 14,
+                question: 'What is math.isnan(float("nan"))?',
+                code: 'import math\nmath.isnan(float("nan"))',
+                options: ['a) True', 'b) False', 'c) nan', 'd) Error'],
+                correct: 'a',
+                explanation: 'isnan() checks if value is NaN (Not a Number). float("nan") creates NaN.'
+            },
+            // Random - ranges
+            {
+                num: 15,
+                question: 'What does random.randint(1, 10) return?',
+                code: 'import random\nrandom.randint(1, 10)',
+                options: ['a) 1 to 9', 'b) 1 to 10 (inclusive)', 'c) 0 to 9', 'd) 0 to 10'],
+                correct: 'b',
+                explanation: 'randint(a, b) is INCLUSIVE on both ends. randint(1,10) can return 1 through 10.'
+            },
+            {
+                num: 16,
+                question: 'What does random.randrange(1, 10) return?',
+                code: 'import random\nrandom.randrange(1, 10)',
+                options: ['a) 1 to 10 inclusive', 'b) 1 to 9 (end exclusive)', 'c) 0 to 9', 'd) Error'],
+                correct: 'b',
+                explanation: 'randrange(a, b) is EXCLUSIVE on end. randrange(1,10) returns 1-9 (like range).'
+            },
+            {
+                num: 17,
+                question: 'What does random.sample([1,2,3,4,5], 3) return?',
+                code: 'import random\nrandom.sample([1,2,3,4,5], 3)',
+                options: ['a) 3 random elements with duplicates', 'b) 3 unique random elements', 'c) First 3 elements', 'd) Shuffled list'],
+                correct: 'b',
+                explanation: 'sample(list, k) picks k UNIQUE items. choice() picks 1. shuffle() reorders.'
+            },
+            {
+                num: 18,
+                question: 'What is the difference: randint(1,5) vs randrange(1,5)?',
+                code: 'randint(1, 5)  # vs\nrandrange(1, 5)',
+                options: ['a) No difference', 'b) randint includes 5, randrange excludes it', 'c) randrange is faster', 'd) randint for floats'],
+                correct: 'b',
+                explanation: 'randint(1,5) returns 1-5 (inclusive). randrange(1,5) returns 1-4 (exclusive end).'
+            },
+            // os.path
+            {
+                num: 19,
+                question: 'What does os.path.exists("file.txt") return?',
+                code: 'import os\nos.path.exists("file.txt")',
+                options: ['a) Opens file', 'b) True/False if exists', 'c) File size', 'd) Path string'],
+                correct: 'b',
+                explanation: 'exists() returns True if file/dir exists, False otherwise.'
+            },
+            {
+                num: 20,
+                question: 'What does os.path.isfile() check?',
+                code: 'import os\nos.path.isfile("data.txt")',
+                options: ['a) File exists', 'b) Is it a file (not directory)', 'c) File permissions', 'd) File size > 0'],
+                correct: 'b',
+                explanation: 'isfile() returns True only if path is a file. isdir() checks for directory.'
+            },
+            {
+                num: 21,
+                question: 'What does os.remove("file.txt") do?',
+                code: 'import os\nos.remove("file.txt")',
+                options: ['a) Renames file', 'b) Moves file', 'c) Deletes file', 'd) Hides file'],
+                correct: 'c',
+                explanation: 'remove() permanently deletes the file. Be careful - no undo!'
+            },
+            // Assertions
+            {
+                num: 22,
+                question: 'What does assertEqual(5, 5) do?',
+                code: 'self.assertEqual(5, 5)',
+                options: ['a) Fails test', 'b) Passes test', 'c) Prints 5', 'd) Returns True'],
+                correct: 'b',
+                explanation: 'assertEqual(a, b) passes if a == b. Fails if different.'
+            },
+            {
+                num: 23,
+                question: 'What does assertTrue(True) do?',
+                code: 'self.assertTrue(True)',
+                options: ['a) Fails', 'b) Passes', 'c) Does nothing', 'd) Error'],
+                correct: 'b',
+                explanation: 'assertTrue(x) passes if x is True. assertFalse(x) passes if x is False.'
+            },
+            {
+                num: 24,
+                question: 'What does assertIn(1, [1,2,3]) do?',
+                code: 'self.assertIn(1, [1,2,3])',
+                options: ['a) Fails', 'b) Passes (1 is in list)', 'c) Returns list', 'd) Error'],
+                correct: 'b',
+                explanation: 'assertIn(a, b) passes if a is in b. assertNotIn() does opposite.'
+            },
+            {
+                num: 25,
+                question: 'What does assertIsInstance(5, int) do?',
+                code: 'self.assertIsInstance(5, int)',
+                options: ['a) Fails', 'b) Passes (5 is an int)', 'c) Returns type', 'd) Error'],
+                correct: 'b',
+                explanation: 'assertIsInstance(obj, type) passes if obj is instance of type.'
+            }
+        ];
+
+        let currentQuestion = 0;
+        const answers = new Map();
+
+        function renderQuestion(index) {
+            const q = questions[index];
+            return `
+                <div class="question-card">
+                    <div class="question-number">Question ${q.num} of 25</div>
+                    <div class="question-text">${q.question}</div>
+                    ${q.code ? `<div class="question-code">${q.code}</div>` : ''}
+                    <div class="options">
+                        ${q.options.map((opt, idx) => `
+                            <label class="option">
+                                <input type="radio" name="q${index}" value="${['a','b','c','d'][idx]}" ${answers.has(index) && answers.get(index) === ['a','b','c','d'][idx] ? 'checked' : ''}> ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button class="submit-btn" onclick="checkAnswer(${index})">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(index) {
+            const q = questions[index];
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            if (!selected) {
+                alert('Please select an answer');
+                return;
+            }
+
+            answers.set(index, selected.value);
+            const isCorrect = selected.value === q.correct;
+            const card = document.querySelector('.question-card');
+            const feedback = card.querySelector('.feedback');
+
+            card.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                const input = opt.querySelector('input');
+                if (input.value === q.correct) {
+                    opt.classList.add('correct');
+                }
+                if (input.value === selected.value && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            feedback.classList.add('show');
+            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = q.explanation;
+        }
+
+        function updateProgress() {
+            const percentage = (currentQuestion + 1) / 25 * 100;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} of 25`;
+            
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').style.display = currentQuestion === 24 ? 'none' : 'block';
+            document.getElementById('results-btn').style.display = currentQuestion === 24 ? 'block' : 'none';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 24) {
+                currentQuestion++;
+                document.getElementById('quiz-container').innerHTML = renderQuestion(currentQuestion);
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                document.getElementById('quiz-container').innerHTML = renderQuestion(currentQuestion);
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function showResults() {
+            let correct = 0;
+            answers.forEach((val, idx) => {
+                if (val === questions[idx].correct) {
+                    correct++;
+                }
+            });
+
+            const percentage = Math.round((correct / 25) * 100);
+            const passed = percentage >= 70;
+
+            const html = `
+                <div class="result-score">${percentage}%</div>
+                <div class="result-text">You got ${correct} out of 25 correct</div>
+                <div class="result-message">${passed ? '✓ Excellent mastery of obscure topics!' : 'Review the weak areas above'}</div>
+                <button class="submit-btn" style="margin-top: 2rem;" onclick="location.reload()">Start Over</button>
+            `;
+
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').innerHTML = html;
+            document.getElementById('prev-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('results-btn').style.display = 'none';
+        }
+
+        // Initialize
+        document.getElementById('quiz-container').innerHTML = renderQuestion(0);
+        updateProgress();
+    </script>
+</body>
+</html>
